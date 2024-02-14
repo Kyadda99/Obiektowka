@@ -60,6 +60,40 @@ namespace w68264
         //}
 
 
+        public void ileluzek(int ile)
+        {
+            string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectDataQuery = "select * from Sale where Ilosc_Luzek = @ile";
+
+                using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
+                {
+                    selectDataCommand.Parameters.AddWithValue("@ile", ile);
+                    using (SqlDataReader reader = selectDataCommand.ExecuteReader())
+                    {
+
+                        Console.WriteLine("\nSale:");
+                        while (reader.Read())
+                        {
+
+                            int nrSali = reader.IsDBNull(reader.GetOrdinal("Nr")) ? 0 : reader.GetInt32(reader.GetOrdinal("Nr"));
+                            int iloscLuzek = reader.IsDBNull(reader.GetOrdinal("Ilosc_Luzek")) ? 0 : reader.GetInt32(reader.GetOrdinal("Ilosc_Luzek"));
+                            
+
+
+                            Console.WriteLine($"Nr Sali: {nrSali}\n Ilosc luzek: {iloscLuzek}");
+                            Console.WriteLine();
+                        }
+                    }
+                }
+            }
+
+
+        }
 
 
 

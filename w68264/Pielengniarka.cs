@@ -62,13 +62,13 @@ namespace w68264
 
                 int zapas = 0;
 
-                string checkPosibility = "select Zapas from leki where Nazwa ='Aggrastat'";
-                string insertDataQuery = $"update Leki\r\nset Zapas = Zapas -{ilosc}\r\nwhere Nazwa = '{nazwa}'";
+                string checkPosibility = $"select Zapas from leki where Nazwa ='{nazwa}'";
+                string insertDataQuery = $"update Leki set Zapas = Zapas -{ilosc} where Nazwa = '{nazwa}'";
                 using (SqlCommand checkDataCommand = new SqlCommand(checkPosibility, connection))
                 {
                     zapas = Convert.ToInt32(checkDataCommand.ExecuteScalar());
                 }
-                Console.WriteLine(zapas);
+
                 if (zapas - ilosc >= 0)
                 {
                     using (SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection))

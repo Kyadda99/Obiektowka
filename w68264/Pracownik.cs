@@ -18,7 +18,7 @@ namespace w68264
             {
                 connection.Open();
 
-                string selectDataQuery = "select IDWiz, PAcjent,Lekarz,Data,Sala from Umówione_Wizyty where Pacjent = @Pesel";
+                string selectDataQuery = "select IDWiz, Pacjent,Lekarz,Data,Sala from Umówione_Wizyty where Pacjent = @Pesel";
 
                 using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
                 {

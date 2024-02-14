@@ -11,7 +11,7 @@ namespace w68264
     {
 
 
-        public void ZarejestrujWizyte(string pesel, int lekarz, DateTime data, int sala)//'2024-02-20'
+        public void ZarejestrujWizyte(string pesel, int lekarz, string data, int sala)//'2024-02-20'
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
@@ -19,7 +19,7 @@ namespace w68264
             {
                 connection.Open();
 
-                string insertDataQuery = $"insert into Umówione_Wizyty(Pacjent,Lekarz,Data,Sala)\r\nValues ('{pesel}',{lekarz},{data},{sala})\r\n";
+                string insertDataQuery = $"insert into Umówione_Wizyty(Pacjent,Lekarz,Data,Sala)\r\nValues ('{pesel}',{lekarz},'{data}',{sala})\r\n";
 
                 using (SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection))
                 {
@@ -40,7 +40,7 @@ namespace w68264
 
         }
 
-        public void OdwolajWizyte(string idWizyty)
+        public void OdwolajWizyte(int idWizyty)
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
@@ -48,7 +48,7 @@ namespace w68264
             {
                 connection.Open();
 
-                string insertDataQuery = $"delete from Umówione_Wizyty\r\nwhere IdWiz = {idWizyty}";
+                string insertDataQuery = $"delete from Umówione_Wizyty where IdWiz = {idWizyty}";
 
                 using (SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection))
                 {

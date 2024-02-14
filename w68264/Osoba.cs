@@ -10,8 +10,6 @@ namespace w68264
     internal class Osoba
     {
 
-
-
         public void wysBadaniaPac(string pesel)
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
@@ -27,6 +25,7 @@ namespace w68264
                     selectDataCommand.Parameters.AddWithValue("@pesel", pesel);
                     using (SqlDataReader reader = selectDataCommand.ExecuteReader())
                     {
+
                         Console.WriteLine("\nBadania Pacjenta:");
                         while (reader.Read())
                         {

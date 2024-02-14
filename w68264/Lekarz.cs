@@ -12,11 +12,6 @@ namespace w68264
     {
  
 
-
-
-
-
-
         //public void wysDanePac(string pesel)
         //{
         //    string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
@@ -58,13 +53,13 @@ namespace w68264
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using SqlConnection connection = new SqlConnection(connectionString);
             {
                 connection.Open();
 
                 string insertDataQuery = $"INSERT INTO Wykonane_Badanie (Nazwa, Pacjent, Data) VALUES ('{nazwaBadania}','{pesel}','{data}')";
 
-                   using (SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection))
+                using SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection);
                    {
                         try
                         {
