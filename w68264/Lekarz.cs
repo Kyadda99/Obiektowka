@@ -8,52 +8,52 @@ using System.Data.SqlClient;
 
 namespace w68264
 {
-    class Lekarz
+    class Lekarz:PracownikMedyczny
     {
+ 
 
 
 
 
 
 
-
-        public void wysDanePac(string pesel)
-        {
-            string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
-
+        //public void wysDanePac(string pesel)
+        //{
+        //    string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
 
-                string selectDataQuery = "select * from Pacjenci where pesel = @pesel";
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        connection.Open();
 
-                using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
-                {
-                    selectDataCommand.Parameters.AddWithValue("@Pesel", pesel);
-                    using (SqlDataReader reader = selectDataCommand.ExecuteReader())
-                    {
-                        Console.WriteLine("\nPacjent:");
-                        while (reader.Read())
-                        {
+        //        string selectDataQuery = "select * from Pacjenci where pesel = @Pesel";
 
-                            string firstName = reader.IsDBNull(reader.GetOrdinal("Imie")) ? string.Empty : reader.GetString(reader.GetOrdinal("Imie"));
-                            string lastName = reader.IsDBNull(reader.GetOrdinal("Nazwisko")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nazwisko"));
-                            string pes = reader.IsDBNull(reader.GetOrdinal("Pesel")) ? string.Empty : reader.GetString(reader.GetOrdinal("Pesel"));
-                            string lek = reader.IsDBNull(reader.GetOrdinal("Przyjmowane_Leki")) ? string.Empty : reader.GetString(reader.GetOrdinal("Przyjmowane_Leki"));
-                            string historia = reader.IsDBNull(reader.GetOrdinal("Historia_leczenia")) ? string.Empty : reader.GetString(reader.GetOrdinal("Historia_leczenia"));
+        //        using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
+        //        {
+        //            selectDataCommand.Parameters.AddWithValue("@Pesel", pesel);
+        //            using (SqlDataReader reader = selectDataCommand.ExecuteReader())
+        //            {
+        //                Console.WriteLine("\nPacjent:");
+        //                while (reader.Read())
+        //                {
 
-                            Console.WriteLine($"Imię: {firstName}\n Nazwisko: {lastName}\n Pesel: {pes}\nPrzyjmowane Leki:{lek}\n");
-                            Console.WriteLine($"Historia Leczenia:{historia}");
-                            Console.WriteLine();
-                        }
-                    }
-                }
-            }
+        //                    string firstName = reader.IsDBNull(reader.GetOrdinal("Imie")) ? string.Empty : reader.GetString(reader.GetOrdinal("Imie"));
+        //                    string lastName = reader.IsDBNull(reader.GetOrdinal("Nazwisko")) ? string.Empty : reader.GetString(reader.GetOrdinal("Nazwisko"));
+        //                    string pes = reader.IsDBNull(reader.GetOrdinal("Pesel")) ? string.Empty : reader.GetString(reader.GetOrdinal("Pesel"));
+        //                    string lek = reader.IsDBNull(reader.GetOrdinal("Przyjmowane_Leki")) ? string.Empty : reader.GetString(reader.GetOrdinal("Przyjmowane_Leki"));
+        //                    string historia = reader.IsDBNull(reader.GetOrdinal("Historia_leczenia")) ? string.Empty : reader.GetString(reader.GetOrdinal("Historia_leczenia"));
+
+        //                    Console.WriteLine($"Imię: {firstName}\n Nazwisko: {lastName}\n Pesel: {pes}\nPrzyjmowane Leki:{lek}\n");
+        //                    Console.WriteLine($"Historia Leczenia:{historia}");
+        //                    Console.WriteLine();
+        //                }
+        //            }
+        //        }
+        //    }
 
 
-        }
+        //}
         public void zlecBadanie(string pesel,string nazwaBadania,string data)//'2024-02-20'
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
@@ -83,42 +83,8 @@ namespace w68264
 
         }
 
-        public void wysBadaniaPac(string pesel)
-        {
-            string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                string selectDataQuery = "select Nazwa,Cast(Data as date) as Termin,Wynik from Wykonane_Badanie where Pacjent = @pesel";
-
-                using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
-                {
-                    selectDataCommand.Parameters.AddWithValue("@pesel", pesel);
-                    using (SqlDataReader reader = selectDataCommand.ExecuteReader())
-                    {
-                        Console.WriteLine("\nBadania Pacjenta:");
-                        while (reader.Read())
-                        {
-
-                            string nazwa = reader.IsDBNull(reader.GetOrdinal("Nazwa")) ? "Null" : reader.GetString(reader.GetOrdinal("Nazwa"));
-                            DateTime termin = reader.GetDateTime(reader.GetOrdinal("Termin"));
-                            string wynik = reader.IsDBNull(reader.GetOrdinal("Wynik")) ? "Null" : reader.GetString(reader.GetOrdinal("Wynik"));
-                            
-
-                            Console.WriteLine($"Nazwa Badania: {nazwa}\n Data: {termin}\n Wynik: {wynik}");
-                            Console.WriteLine();
-                        }
-                    }
-                }
-            }
-
-
-        }
-
-
-        public void zaplanujOperacje(string pesel, string nazwaOperacji)//'2024-02-20'
+        public void zaplanujOperacje(string pesel, string nazwaOperacji)
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
@@ -147,9 +113,7 @@ namespace w68264
 
         }
 
-
-
-        public void raportOperacja(int idOperacji, int Personel, string wynik)//'2024-02-20'
+        public void raportOperacja(int idOperacji, int Personel, string wynik)
         {
             string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
@@ -178,8 +142,38 @@ namespace w68264
 
         }
 
+        public void wystawZalecenie(string pacjent,int lekarz, string lek,string zalecenie ,DateTime dzienTemp=default(DateTime))
+        {
+            string dzien = "";
+            if (dzienTemp == default(DateTime)) {dzien = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); }
+            string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string insertDataQuery = $"INSERT INTO Zalecenia(Pacjent,Lekarz,Lek,Zalecenie,Data) VALUES ('{pacjent}',{lekarz},'{lek}','{zalecenie}',CONVERT(varchar, '{dzien}', 23))";
+
+                using (SqlCommand insertDataCommand = new SqlCommand(insertDataQuery, connection))
+                {
+                    try
+                    {
+                        insertDataCommand.ExecuteNonQuery();
+                        Console.WriteLine($"Zalecenie to: '{pacjent}','{lekarz}','{lek}','{zalecenie}','{dzien}'");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Błąd przy dodawaniu danych: {ex.Message}");
+                    }
+                }
 
 
+            }
+
+
+        }
+
+        
 
 
 
