@@ -110,6 +110,7 @@ class Program
                         Console.WriteLine("Nieprawidłowy wybór. Spróbuj ponownie.");
                         break;
                 }
+                Console.ReadKey();
             }
         }
 
@@ -131,7 +132,8 @@ class Program
                 Console.WriteLine("5. Wyswietl leki pacjenta");
                 Console.WriteLine("6. Wyswietl Wizyty pacjenta");
                 Console.WriteLine("7. Wyswietl Badania pacjenta");
-                Console.WriteLine("8. Powrót");
+                Console.WriteLine("8. Wyswietl dane pacjenta");
+                Console.WriteLine("9. Powrót");
 
                 Console.Write("Twój wybór: ");
                 string choice = Console.ReadLine();
@@ -225,8 +227,15 @@ class Program
                         lekarz.wysBadaniaPac(pesel);
 
                         break;
-
                     case "8":
+                        Console.WriteLine("Podaj pesel:");
+                        pesel = Console.ReadLine();
+                        
+                        lekarz.wysDanePac(pesel);
+
+                        break;
+
+                    case "9":
                         Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;

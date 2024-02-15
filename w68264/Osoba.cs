@@ -18,7 +18,7 @@ namespace w68264
             {
                 connection.Open();
 
-                string selectDataQuery = "select Nazwa,Cast(Data as date) as Termin,Wynik from Wykonane_Badanie where Pacjent = @pesel";
+                string selectDataQuery = "select idBadania, Nazwa,Cast(Data as date) as Termin,Wynik from Wykonane_Badanie where Pacjent = @pesel";
 
                 using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
                 {
@@ -30,12 +30,13 @@ namespace w68264
                         while (reader.Read())
                         {
 
+                            int idBadania = reader.IsDBNull(reader.GetOrdinal("idBadania")) ? 0 : reader.GetInt16(reader.GetOrdinal("idBadania"));
                             string nazwa = reader.IsDBNull(reader.GetOrdinal("Nazwa")) ? "Null" : reader.GetString(reader.GetOrdinal("Nazwa"));
                             DateTime termin = reader.GetDateTime(reader.GetOrdinal("Termin"));
                             string wynik = reader.IsDBNull(reader.GetOrdinal("Wynik")) ? "Null" : reader.GetString(reader.GetOrdinal("Wynik"));
 
 
-                            Console.WriteLine($"Nazwa Badania: {nazwa}\n Data: {termin}\n Wynik: {wynik}");
+                            Console.WriteLine($"Id Badania: {idBadania},\nNazwa Badania: {nazwa}\nData: {termin}\nWynik: {wynik}");
                             Console.WriteLine();
                         }
                     }
