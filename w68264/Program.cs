@@ -2,8 +2,7 @@
 using System;
 using System.Security.Cryptography.X509Certificates;
 using w68264;
-
-
+using System.Reflection;
 class Program
 {
 
@@ -15,6 +14,7 @@ class Program
     {
 
         Menu();
+        
 
 
 
@@ -22,9 +22,62 @@ class Program
 
 
 
+         static void Login(string login, string password)
+        {
+            
+            string connectionString = "Data Source=(localdb)\\Local;Database=w68264_Projekt;Integrated Security=True";
 
 
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string selectDataQuery = "select Role, Login, Password from Login where Login = @Login and Password = @Password";
+
+                using (SqlCommand selectDataCommand = new SqlCommand(selectDataQuery, connection))
+                {
+                    selectDataCommand.Parameters.AddWithValue("@Login", login);
+                    selectDataCommand.Parameters.AddWithValue("@Password", password);
+
+                    using (SqlDataReader reader = selectDataCommand.ExecuteReader())
+                    {
+
+                        while (reader.Read())
+                        {
+                            string Rola = reader.IsDBNull(reader.GetOrdinal("Role")) ? string.Empty : reader.GetString(reader.GetOrdinal("Role"));
+
+
+                            switch (Rola)
+                            {
+                                case "Lekarz":
+                                    Lekarz();
+                                    break;
+
+                                case "Pielengniarka":
+                                    Pielengniarka();
+                                    break;
+
+                                case "obsluga":
+                                    Obsluga();
+                                    break;
+
+                                case "Pacjent":
+                                    Pacjent();
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Nieprawidłowe dane. Spróbuj ponownie.");
+                                    Console.ReadKey();
+                                    break;
+                            }
+
+                        }
+                        }
+                    }
+                }
+            }
+        
          static void Menu()
         {
             bool exit = false;
@@ -32,36 +85,24 @@ class Program
             while (!exit)
             {
                 Console.Clear();
-                Console.WriteLine("Kto:");
-                Console.WriteLine("1. Lekarz");
-                Console.WriteLine("2. Pielengniarka");
-                Console.WriteLine("3. Obsługa");
-                Console.WriteLine("4. Pacjent");
-                Console.WriteLine("5. Wyjście");
+                Console.WriteLine("1. Zaloguj");
+                Console.WriteLine("2. Zamknij program\n");
 
-                Console.Write("Twój wybór: ");
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        Lekarz();
+                        Console.Clear();
+                        Console.WriteLine("Login:");
+                        string login = Console.ReadLine();
+                        Console.WriteLine("Haslo:");
+                        string haslo = Console.ReadLine();
+                        Login(login, haslo);
                         break;
 
                     case "2":
-                        Pielengniarka();
-                        break;
-
-                    case "3":
-                        Obsluga();
-                        break;
-
-                    case "4":
-                        Pacjent();
-                        break;
-
-                    case "5":
-                        Console.WriteLine("Wybrano wyjście. Program zostanie zakończony.");
+                        Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;
 
@@ -186,7 +227,7 @@ class Program
                         break;
 
                     case "8":
-                        Console.WriteLine("Wybrano wyjście. Program zostanie zakończony.");
+                        Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;
 
@@ -279,7 +320,7 @@ class Program
                         break;
 
                     case "6":
-                        Console.WriteLine("Wybrano wyjście. Program zostanie zakończony.");
+                        Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;
 
@@ -392,7 +433,7 @@ class Program
                         break;
 
                     case "6":
-                        Console.WriteLine("Wybrano wyjście. Program zostanie zakończony.");
+                        Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;
 
@@ -447,7 +488,7 @@ class Program
                         break;
 
                     case "3":
-                        Console.WriteLine("Wybrano wyjście. Program zostanie zakończony.");
+                        Console.WriteLine("Program zostanie zakończony.");
                         exit = true;
                         break;
 
@@ -463,73 +504,5 @@ class Program
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
